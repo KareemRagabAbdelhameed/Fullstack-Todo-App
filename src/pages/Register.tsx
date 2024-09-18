@@ -10,6 +10,7 @@ import { useState } from "react";
 import toast from 'react-hot-toast';
 import { AxiosError } from "axios";
 import { IAxiosErrorMsg } from "../interfaces";
+import { useNavigate } from "react-router-dom";
 
 //  لازم تقرأ ده عشان لو عاوز تستخدم ال component  ده 
 
@@ -35,11 +36,11 @@ const RegisterPage = () => {
   }
 
 
-
+const myNavigate=useNavigate()
   const [loader,setLoader]=useState(false)
   const { register, handleSubmit ,formState:{errors} } = useForm<IFormInput>( { resolver:yupResolver(registerValidationSchema)} );
   const onSubmit: SubmitHandler<IFormInput> =async (data) => {
-    const successToast = () => toast.success(' success register',{ style:{border:"1px solid green"} });
+    const successToast = () => toast.success(' success register , You will be directed to the login page during 2 second ',{ duration:1500, style:{border:"1px solid green"} });
 
 
 setLoader(true)
@@ -47,9 +48,19 @@ setLoader(true)
 //  case ==> fulfilled (success)
 try {
 
-  const result=await axiosInstance.post('/auth/local/register',data)
-  console.log("%cdata", "color: green; padding: 5px; font-size: 20px;", "=>", result);
-  successToast()
+  const {status,data:resData}=await axiosInstance.post('/auth/local/register',data)
+  console.log("%cdata", "color: green; padding: 5px; font-size: 20px;", "=>", resData);
+  if(status===200) {
+
+    successToast()
+    setTimeout(()=>{
+
+myNavigate('/login')
+
+
+    },2000)
+
+  }
   //  case ==> Rejected 
 
 }  

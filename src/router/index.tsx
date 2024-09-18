@@ -7,8 +7,11 @@ import HomePage from "../pages";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 
-const isLoggedIn = false;
-const userData: { email: string } | null = isLoggedIn ? { email: "email@gmail.com" } : null;
+// const isLoggedIn = false;
+// const userData: { email: string } | null = isLoggedIn ? { email: "email@gmail.com" } : null;
+
+const userDataStored=JSON.parse(` ${localStorage.getItem('StrapiToDoUserData')}`)
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,15 +21,23 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <ProtectedRoute isAllowed={isLoggedIn} redirectPath="/login" data={userData}>
+            <ProtectedRoute isAllowed={userDataStored} redirectPath="/login" data={userDataStored}>
               <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isAllowed={userDataStored} redirectPath="/login" data={userDataStored}>
+            <h3 className="text-center bg-gray-400 text-indigo-600 py-3" > hello welcom to profile </h3>
             </ProtectedRoute>
           }
         />
         <Route
           path="login"
           element={
-            <ProtectedRoute isAllowed={!isLoggedIn} redirectPath="/" data={userData}>
+            <ProtectedRoute isAllowed={!userDataStored} redirectPath="/" data={userDataStored}>
               <LoginPage />
             </ProtectedRoute>
           }
@@ -34,7 +45,7 @@ const router = createBrowserRouter(
         <Route
           path="register"
           element={
-            <ProtectedRoute isAllowed={!isLoggedIn} redirectPath="/login" data={userData}>
+            <ProtectedRoute isAllowed={!userDataStored} redirectPath="/login" data={userDataStored}>
               <RegisterPage />
             </ProtectedRoute>
           }

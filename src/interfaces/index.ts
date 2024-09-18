@@ -24,3 +24,12 @@ export interface IAxiosErrorMsg{
         message?:string
     }
 }
+
+export interface ItoDo {
+
+ id:number;
+ title:string;
+ desc?:string;
+
+
+}

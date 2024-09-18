@@ -25,15 +25,26 @@ const LoginPage = () => {
   const { register, handleSubmit ,formState:{errors} } = useForm<IFormInput>( { resolver:yupResolver(loginValidationSchema)} );
   const onSubmit: SubmitHandler<IFormInput> =async (data) => {
 
-  const successToast = () => toast.success(' success loged in ',{ style:{border:"1px solid green"} });
+  const successToast = () => toast.success(' success loged in ' ,{duration:1500, style:{border:"1px solid green"} });
          setLoader(true)
 
         //  case ==> fulfilled (success)
         try {
 
-          const result=await axiosInstance.post('/auth/local',data)
-          console.log("%cdata", "color: green; padding: 5px; font-size: 20px;", "=>", result);
+          const {status,data:resData}=await axiosInstance.post('/auth/local',data)
+          console.log("%cdata", "color: green; padding: 5px; font-size: 20px;", "=>", resData);
+
+          if(status===200) {
+       localStorage.setItem('StrapiToDoUserData',JSON.stringify(resData))
+
           successToast()
+             setTimeout(()=>{
+
+location.replace('/')
+
+             },2000)
+
+          }
 
         }  
 

@@ -30,12 +30,13 @@ const buttonVariants = cva("rounded-md flex justify-center items-center font-med
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   children: ReactNode;
-  isLoading?:boolean
+  isLoading?:boolean,
+  type?:"button" | "submit" | "reset" | undefined
 }
 
-const Button = ({ variant, size, fullWidth, className, children,isLoading , ...props }: ButtonProps) => {
+const Button = ({ variant, size, fullWidth, className, children,isLoading ,type , ...props }: ButtonProps) => {
   return (
-    <button  className={cn(buttonVariants({ variant, size, fullWidth, className }))}  {...props} disabled={isLoading}  >
+    <button   className={cn(buttonVariants({ variant, size, fullWidth, className }))}  {...props} disabled={isLoading} type={type}  >
     
 
    {
