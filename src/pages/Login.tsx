@@ -11,6 +11,7 @@ import { IAxiosErrorMsg } from "../interfaces";
 import { isIAxiosErrorMsg } from "../config/AxiosConfig";
 import { LOGIN_FORM } from "../data";
 import InputErrorMsg from "../components/errors/InputErrorMsg";
+// import { useNavigate } from "react-router-dom";
 
 interface IFormInput {
   identifier: string;
@@ -21,11 +22,12 @@ const LoginPage = () => {
 
 
   const [loader,setLoader]=useState(false)
+  // const navigate=useNavigate()
 
   const { register, handleSubmit ,formState:{errors} } = useForm<IFormInput>( { resolver:yupResolver(loginValidationSchema)} );
   const onSubmit: SubmitHandler<IFormInput> =async (data) => {
 
-  const successToast = () => toast.success(' success loged in ' ,{duration:1500, style:{border:"1px solid green"} });
+  const successToast = () => toast.success(' success loged in ' ,{duration:1300, style:{border:"1px solid green"} });
          setLoader(true)
 
         //  case ==> fulfilled (success)
@@ -39,10 +41,11 @@ const LoginPage = () => {
 
           successToast()
              setTimeout(()=>{
+          // navigate('/')
+location.replace('/') 
+//  لى استخدمنا ال replace  هنا بدل ال  useNavigate  ؟ عشان خاطر 
 
-location.replace('/')
-
-             },2000)
+             },1500)
 
           }
 

@@ -10,7 +10,7 @@ interface PropAuthQuery {
 }
 
 
-export default function useAuthenticatedQuery( {queryKey,url,config }:PropAuthQuery ) {
+export default function UseGetTodosQuery( {queryKey,url,config }:PropAuthQuery ) {
   return useQuery({
 
     queryKey,

@@ -6,11 +6,13 @@ import ErrorHandler from "../components/errors/ErrorHandler";
 import HomePage from "../pages";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
+import TodosPage from "../pages/TodosPage";
 
 // const isLoggedIn = false;
 // const userData: { email: string } | null = isLoggedIn ? { email: "email@gmail.com" } : null;
 
 const userDataStored=JSON.parse(` ${localStorage.getItem('StrapiToDoUserData')}`)
+console.log('userDataStored = > ', userDataStored);
 
 
 const router = createBrowserRouter(
@@ -23,6 +25,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute isAllowed={userDataStored} redirectPath="/login" data={userDataStored}>
               <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/todosPage"
+          element={
+            <ProtectedRoute isAllowed={userDataStored} redirectPath="/login" data={userDataStored}>
+              <TodosPage />
             </ProtectedRoute>
           }
         />
