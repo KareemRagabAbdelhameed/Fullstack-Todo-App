@@ -119,15 +119,22 @@
 import UseGetTodosQuery from '../hooks/UseGetTodosQuery'
 import ToDoSkeletonLoader from '../components/ui/ToDoSkeletonLoader'
 import Paginator from '../components/ui/Paginator'
-import { useState } from 'react'
-
+import { ChangeEvent, useState } from 'react'
+import styles from './TodosPage.module.css'
 
 
 export default function TodosPage() {
 
+  
 
+const selectStyle=`   
+ bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+         focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+               dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`;
     const userDataStored=JSON.parse(` ${localStorage.getItem('StrapiToDoUserData')}`)
   const [currentPage,setCurrentPage]=useState<number> (1)
+  const [pageSize,setPageSize]=useState<number> (5)
+  const [sortBy,setSortBy]=useState<string> ('DESC')
 
 function onClickNext () {
 setCurrentPage( prev=> prev+1 )
@@ -137,7 +144,26 @@ function onClickPrev () {
 setCurrentPage( prev=> prev-1 )
 
 }
-    const {data,isLoading }= UseGetTodosQuery( {queryKey:['todosPaginated', `${currentPage}`],url:'/todos',
+
+ function onchangeSelected (event:ChangeEvent<HTMLSelectElement>){
+
+
+setPageSize(+event.target.value)
+console.log(event.target.value );
+
+
+ }
+
+ function onchangeSelected_Sort (event:ChangeEvent<HTMLSelectElement>){
+
+  setSortBy(event.target.value)
+
+
+ }
+
+
+    const {data,isLoading ,isFetching }= UseGetTodosQuery( {queryKey:[ `todosPaginated${currentPage}${pageSize}${sortBy}`],
+        url:`/todos?pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}&sort=createdAt:${sortBy} `,
     
         config:{
     
@@ -145,7 +171,7 @@ setCurrentPage( prev=> prev-1 )
          
         } } )
     
-            //  console.log(" data,error,isLoading =>useQuery =>",{data,error,isLoading});
+             console.log(" data,error,isLoading =>useQuery =>",{data});
     
     
       if(isLoading) 
@@ -160,24 +186,53 @@ setCurrentPage( prev=> prev-1 )
 
 
   return (
+
+<div>
+
+  <div className='flex justify-end gap-5 mb-5 ' >
+  <form className="max-w-sm ">
+  <select id="countries" className={` ${styles.arrowSelect} ${selectStyle}`} value={pageSize} onChange={ onchangeSelected }   >
+    <option disabled> Page size </option>
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+    <option value="20">20</option>
+  </select>
+</form>
+<form className="max-w-sm ">
+  <select id="countries" className={` ${styles.arrowSelect} ${selectStyle}`} value={sortBy} onChange={ onchangeSelected_Sort }   >
+    <option disabled> Sort By </option>
+    <option value="ASC">Oldest</option>
+    <option value="DESC">Latest</option>
+   
+  </select>
+</form>
+  </div>
+
+
+
     <div>
-    {
+                {
 
-            data.data.length>0? data.data?.map(({attributes}:{id:number , attributes:{title:string}},index:number)=>{
-            return <div key={index} className="flex items-center justify-between hover:bg-gray-100 duration-300 p-3 rounded-md even:bg-gray-100">
-                        <h3 className="w-full font-semibold"> {index+1} - {attributes.title} </h3>
-                    </div>
-    
-
-
-
-                   }  ) : <> <h1 className="text-center m-5 bg-black text-white" > No todo yet</h1> </>
+                      data.data.length>0? data.data?.map(({attributes}:{id:number , attributes:{title:string}},index:number)=>{
+                        return <div key={index} className="flex items-center justify-between hover:bg-gray-100 duration-300 p-3 rounded-md even:bg-gray-100">
+                                    <h3 className="w-full font-semibold"> {index+1} - {attributes.title} </h3>
+                                </div>
+                
 
 
 
-    }
+                              }  ) : <> <h1 className="text-center m-5 bg-black text-white" > No todo yet</h1> </>
 
-    <Paginator currentPage={currentPage} pageCount={3} onClickNext={onClickNext} onClickPrev={onClickPrev}  />
+
+
+                }
+
+    <Paginator isLoading={isLoading ||isFetching } total={data.meta.pagination.total} currentPage={currentPage} pageCount={data&&data.meta.pagination.pageCount} onClickNext={onClickNext} onClickPrev={onClickPrev}  />
     </div>
+
+</div>
+
+
   )
 }
