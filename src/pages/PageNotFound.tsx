@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 const PageNotFound = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center w-screen h-screen">
@@ -20,5 +19,4 @@ const PageNotFound = () => {
     </div>
   );
 };
-
 export default PageNotFound;

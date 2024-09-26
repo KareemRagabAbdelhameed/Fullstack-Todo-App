@@ -6,15 +6,8 @@ import ErrorHandler from "../components/errors/ErrorHandler";
 import HomePage from "../pages";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
-import TodosPage from "../pages/TodosPage";
-
-// const isLoggedIn = false;
-// const userData: { email: string } | null = isLoggedIn ? { email: "email@gmail.com" } : null;
-
-const userDataStored=JSON.parse(` ${localStorage.getItem('StrapiToDoUserData')}`)
-console.log('userDataStored = > ', userDataStored);
-
-
+const isLoggedIn = false;
+const userData: { email: string } | null = isLoggedIn ? { email: "email@gmail.com" } : null;
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -23,31 +16,15 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <ProtectedRoute isAllowed={userDataStored} redirectPath="/login" data={userDataStored}>
+            <ProtectedRoute isAllowed={isLoggedIn} redirectPath="/login" data={userData}>
               <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/todosPage"
-          element={
-            <ProtectedRoute isAllowed={userDataStored} redirectPath="/login" data={userDataStored}>
-              <TodosPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute isAllowed={userDataStored} redirectPath="/login" data={userDataStored}>
-            <h3 className="text-center bg-gray-400 text-indigo-600 py-3" > hello welcom to profile </h3>
             </ProtectedRoute>
           }
         />
         <Route
           path="login"
           element={
-            <ProtectedRoute isAllowed={!userDataStored} redirectPath="/" data={userDataStored}>
+            <ProtectedRoute isAllowed={!isLoggedIn} redirectPath="/" data={userData}>
               <LoginPage />
             </ProtectedRoute>
           }
@@ -55,17 +32,15 @@ const router = createBrowserRouter(
         <Route
           path="register"
           element={
-            <ProtectedRoute isAllowed={!userDataStored} redirectPath="/login" data={userDataStored}>
+            <ProtectedRoute isAllowed={!isLoggedIn} redirectPath="/login" data={userData}>
               <RegisterPage />
             </ProtectedRoute>
           }
         />
       </Route>
-
       {/* Page Not Found */}
       <Route path="*" element={<PageNotFound />} />
     </>
   )
 );
-
 export default router;
