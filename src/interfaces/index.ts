@@ -1,10 +1,17 @@
 export interface IRegisterInput {
-    name: 'email'|'userName'|'password' ;
-    placeholder: string;
-    type: string;
-    validation: {
-        required?: boolean;
-        minLength?: number;
-        pattern?: RegExp;
-    };
+   name : "username" | "email" | "password", 
+   placeholder : string,
+   type : string,
+   validation : {
+    required? : boolean,
+    minlingth? : number,
+    pattern? : RegExp,
+   }
+
+}
+
+export interface IErrorResponse {
+   error : {
+      message : string,
+   }
 }
