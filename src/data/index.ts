@@ -1,6 +1,6 @@
-import { IRegisterInput } from "../interfaces";
+import { ILoginInput, IRegisterInput } from "../interfaces";
 
-const RegisterForm : IRegisterInput[] = [
+export const RegisterForm : IRegisterInput[] = [
     {
         name : "username",
         placeholder : "UserName",
@@ -30,4 +30,24 @@ const RegisterForm : IRegisterInput[] = [
     },
 ]
    
-export default RegisterForm;
+
+export const LoginForm:ILoginInput[] = [
+    {
+        name : "identifier",
+        placeholder : "Email Address",
+        type : "email",
+        validation : {
+            required : true,
+            pattern : /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        }
+    },
+    {
+        name : "password",
+        placeholder : "Password",
+        type : "password",
+        validation : {
+            required : true,
+            minLength : 6,
+        }
+    }
+]

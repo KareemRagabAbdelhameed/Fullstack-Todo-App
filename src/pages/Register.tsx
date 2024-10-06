@@ -1,10 +1,10 @@
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { useForm, SubmitHandler } from "react-hook-form"
-import RegisterForm from "../data";
+import {RegisterForm} from "../data";
 import InputErrorMsg from "../components/errors/InputErrorMsg";
 import { yupResolver } from '@hookform/resolvers/yup';
-import schema from "../validation";
+import {registerSchema} from "../validation";
 import axiosInstance from "../config/AxiosConfig";
 import toast, { Toaster } from 'react-hot-toast';
 import { useState } from "react";
@@ -20,7 +20,7 @@ interface IFormInput {
 const RegisterPage = () => {
   const [isLoading,setIsLoading] = useState(false);
   const { register, formState: { errors }, handleSubmit } = useForm<IFormInput>({
-    resolver : yupResolver(schema)
+    resolver : yupResolver(registerSchema)
   })
   const onSubmit: SubmitHandler<IFormInput> = async(data) => {
     console.log(data);
@@ -28,7 +28,7 @@ const RegisterPage = () => {
     try {
       const {status} = await axiosInstance.post("/auth/local/register",data);
       if(status===200){
-        toast('Hello World', {
+        toast('Success Registeration', {
           duration: 4000,
           position: 'top-center',
         
@@ -37,7 +37,7 @@ const RegisterPage = () => {
           className: '',
         
           // Custom Icon
-          icon: '👏',
+          icon: '✅',
         
           // Change colors of success/error/loading icon
           iconTheme: {
