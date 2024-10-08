@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { loginSchema } from "../validation";
 import InputErrorMsg from "../components/errors/InputErrorMsg";
 import axiosInstance from "../config/AxiosConfig";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { IErrorResponse } from "../interfaces";
@@ -26,10 +26,11 @@ const LoginPage = () => {
     console.log(data);
     setIsLoading(true);
     try {
-      const {status} =await axiosInstance.post("/auth/local",data);
+      const {status , data:resData} =await axiosInstance.post("/auth/local",data);
+      console.log(resData);
       if(status===200){
         toast('Login Successfully', {
-          duration: 4000,
+          duration: 2000,
           position: 'top-center',
         
           // Styling
@@ -52,6 +53,11 @@ const LoginPage = () => {
           },
         });
       }
+      localStorage.setItem("loggedInUser",JSON.stringify(resData));
+
+      setTimeout(() => {
+        location.replace("/");
+      }, 200);
       
     } catch (error) {
       const errorObj = error as AxiosError<IErrorResponse>;

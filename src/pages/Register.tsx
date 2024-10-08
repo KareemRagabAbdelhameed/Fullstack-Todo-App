@@ -6,10 +6,11 @@ import InputErrorMsg from "../components/errors/InputErrorMsg";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {registerSchema} from "../validation";
 import axiosInstance from "../config/AxiosConfig";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { IErrorResponse } from "../interfaces";
+import { useNavigate } from "react-router-dom";
 
 interface IFormInput {
   username: string,
@@ -18,6 +19,7 @@ interface IFormInput {
 }
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const [isLoading,setIsLoading] = useState(false);
   const { register, formState: { errors }, handleSubmit } = useForm<IFormInput>({
     resolver : yupResolver(registerSchema)
@@ -27,9 +29,10 @@ const RegisterPage = () => {
     setIsLoading(true);
     try {
       const {status} = await axiosInstance.post("/auth/local/register",data);
+      
       if(status===200){
         toast('Success Registeration', {
-          duration: 4000,
+          duration: 2000,
           position: 'top-center',
         
           // Styling
@@ -52,6 +55,11 @@ const RegisterPage = () => {
           },
         });
       }
+      
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       const errorObj = error as AxiosError<IErrorResponse>;
      console.log( errorObj.response?.data.error.message);
