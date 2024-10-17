@@ -26,3 +26,9 @@ export interface ILoginInput {
       minLength? : number,
    }
 }
+
+export interface ITodo {
+   id : number,
+   title : string,
+   description? : string,
+}
